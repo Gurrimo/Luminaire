@@ -5,6 +5,8 @@
 
     public static class Utilities
     {
+        // Ensures game path is set and the game executable is accessible
+        // from the directory when set.
         public static bool IsGamePathValid()
         {
             var settings = LuminaireSettings.Instance;
