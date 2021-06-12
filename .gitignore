@@ -63,3 +63,9 @@ crashlytics-build.properties
 
 Assets/Editor/LuminaireSettings.asset
 Assets/Editor/LuminaireSettings.asset.meta
+/Assets/*.meta
+*.meta
+Assets/Editor/GfxbinTool/Imported/
+Assets/Scenes/GladioTest.unity
+Assets/Scripts/DrawNormals.cs
+Assets/Scripts/MeshVertexInfoVisualizer.cs

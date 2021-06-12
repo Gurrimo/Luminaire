@@ -14,26 +14,14 @@ namespace Luminaire.MenuItems
         [MenuItem("Luminaire/Import Entity Package")]
         private static void OnImportAsset()
         {
-            // TODO pull out into a utility function
-            var settings = LuminaireSettings.Instance;
-            var gamePath = settings.GamePath;
-            if (string.IsNullOrEmpty(gamePath))
-            {
-                EditorUtility.DisplayDialog("Game path not set", "Game path must be set before assets can be imported.", "OK");
-                return;
-            }
+            if (!Utilities.IsGamePathValid()) return;
 
-            if (!File.Exists(gamePath))
-            {
-                EditorUtility.DisplayDialog("Invalid game path", "Invalid game path. Make sure the game path points to a valid game executable.", "OK");
-                return;
-            }
-
-            var assetPath = EditorUtility.OpenFilePanel("Import asset", gamePath, "exml");
+            var assetPath = EditorUtility.OpenFilePanel("Import asset", LuminaireSettings.Instance.GamePath, "exml");
             if (string.IsNullOrEmpty(assetPath))
             {
                 return;
             }
+
 
             var fileContent = File.ReadAllBytes(assetPath);
             var loader = new EntityPackageXmlLoader();
