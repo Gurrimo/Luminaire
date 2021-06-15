@@ -12,13 +12,9 @@ namespace GfxbinTool
     {
         public static void Convert(ModelResourceNode gmdl, string inputPath, string outputPath)
         {
-            // Create a mesh object and helper objects to recreate component
-            // meshes from the source file as SubMeshes.
-            //UnityEngine.Mesh mesh = new UnityEngine.Mesh();
-            
-            //List<int[]> triangles = new List<int[]>();
-            
-            // Get file name without .gmdl.gfxbin extension.
+            // Create a game object and helper objects to recreate the mesh
+            // from the source file. Get file name without .gmdl.gfxbin
+            // extension.
             GameObject mainObject = new GameObject((Path.GetFileNameWithoutExtension(inputPath)).Split('.')[0]);
             GameObject meshObject = new GameObject("Mesh");
             meshObject.transform.parent = mainObject.transform;
@@ -39,7 +35,6 @@ namespace GfxbinTool
                     List<Vector3> luminVertices = new List<Vector3>();
                     List<Vector3> normalsList = new List<Vector3>();
                     Vector3[] normalsArray;
-                    //List<Vector3> binormalsList = new List<Vector3>();
                     List<Vector4> tangentList = new List<Vector4>();
                     List<int> triangles = new List<int>();
 
@@ -74,19 +69,12 @@ namespace GfxbinTool
 
                     // TODO: Figure out why I am passing the mesh to these
                     // functions. It doesn't look like I'm using them.
-                    // Resolve normals
                     if (luminMesh.VertexElementArrays.ContainsKey("NORMAL0"))
                     {
                         AddLayerNormal(luminMesh.VertexElementArrays["NORMAL0"], ref normalsList, mesh);
                         normalsArray = normalsList.ToArray();
                     }
-                    // It seems Unity calculates these automatically. Check 
-                    // gmdl in the debugger to make sure nothing weird is 
-                    // going on with these.
-                    /*if (luminMesh.VertexElementArrays.ContainsKey("BINORMAL0"))
-                    {
-                        AddLayerBinormal(luminMesh.VertexElementArrays["BINORMAL0"], ref binormalsList, mesh);
-                    }*/
+
                     if (luminMesh.VertexElementArrays.ContainsKey("TANGENT0"))
                     {
                         AddLayerTangent(luminMesh.VertexElementArrays["TANGENT0"], ref tangentList, normalsList.ToArray());
@@ -97,10 +85,6 @@ namespace GfxbinTool
                     mesh.normals = normalsList.ToArray();
                     mesh.triangles = triangles.ToArray();
                     mesh.tangents = tangentList.ToArray();
-                    /*for (int i = 0; i < triangles.Count; i++) 
-                    {
-                        mesh.SetTriangles(triangles[i], i);  
-                    }*/
 
                     smr.sharedMesh = mesh;
 
@@ -110,13 +94,8 @@ namespace GfxbinTool
                     // break;
                 }
             }
-            
-            
-            //AssetDatabase.CreateAsset(mainObject, "Assets/Editor/GfxbinTool/Imported/" + Path.GetFileNameWithoutExtension(inputPath) + ".asset");
         }
         
-        // This doesn't seem to actually alter normals regardless of what I
-        // do. Needs futher investigation.
         private static void AddLayerNormal(IList rawNormals, ref List<Vector3> normalsList, UnityEngine.Mesh mesh)
         {
             float[] normalsConverted = ConvertToFloatArray(rawNormals);
@@ -128,19 +107,11 @@ namespace GfxbinTool
             }
         }
 
-        /*private static void AddLayerBinormal(IList rawBinormals, ref List<Vector3> binormalsList, UnityEngine.Mesh mesh)
-        {
-
-        }*/
-
         private static void AddLayerTangent(IList rawTangents, ref List<Vector4> tangentList, Vector3[] normals)
         {
             float[] tangentsConverted = ConvertToFloatArray(rawTangents);
             for (int i = 0; i < tangentsConverted.Length; i += 4)
             {
-                //Debug.Log(i);
-                //Vector3 vector3 = new Vector3(tangentsConverted[i], tangentsConverted[i + 1],tangentsConverted[i + 2]);
-                // The magnitude should always be -1 or 1
                 Vector4 vector4 = new Vector4(-tangentsConverted[i],
                                               tangentsConverted[i + 1],
                                               -tangentsConverted[i + 2],

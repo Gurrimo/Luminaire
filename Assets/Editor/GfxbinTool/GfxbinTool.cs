@@ -43,8 +43,6 @@ namespace GfxbinTool
                     continue;
                 }
 
-                // This code seems to assume that a *.gfxbin file has been
-                // passed to the program. What does this code do for a .bnm?
                 var gfxbin = arg;
                 var gpubin = arg.Replace(gmdlExtension, gpubinExtension);
                 if (!File.Exists(gpubin))
@@ -102,6 +100,8 @@ namespace GfxbinTool
         }
 
         // Converts .json file from parsing arguments into...
+        // TODO: Refactor to remove references to fbx files as they are no
+        // longer a part of the Luminaire workflow.
         private static void ConvertFile(string gfxbin, string gpubin)
         {
             DefaultPrintFunction.SetDefaultPrintFunction(Console.WriteLine);
@@ -133,8 +133,6 @@ namespace GfxbinTool
             var modelResourceNode = LmGfxBinAssetLoader.Convert(msgPck);
 
             var fbx = gpubin.Replace(gpubinExtension, fbxExtension);
-            // TODO: Replace with calls to Unity API for conversion
-            //FbxConvertNative.Convert(modelResourceNode, gfxbin, fbx);
             GmdlUnityAssetConverter.Convert(modelResourceNode, gfxbin,"");
         }
     }

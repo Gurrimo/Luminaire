@@ -19,7 +19,6 @@
         {
             if (!Utilities.IsGamePathValid()) return;
 
-            // Get path to 
             var inputPath = EditorUtility.OpenFilePanelWithFilters("Import Game Asset", LuminaireSettings.Instance.GamePath, InputTypes);
             if (string.IsNullOrEmpty(inputPath))
             {
@@ -28,14 +27,7 @@
             // TODO: Fix convert function in GfxbinTool to accept (or have a version that accepts) just one string as an argument.
             // Then remove this quick fix.
             string[] tempArr = { inputPath };
-            //try
-            //{
-                GfxbinTool.Program.convert(tempArr);
-            //}
-            //catch (Exception e)
-            //{
-               // UnityEngine.Debug.Log(e.Message);
-            //}
+            GfxbinTool.Program.convert(tempArr);
         }
     }
 }
