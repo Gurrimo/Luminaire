@@ -65,7 +65,10 @@ Assets/Editor/LuminaireSettings.asset
 Assets/Editor/LuminaireSettings.asset.meta
 /Assets/*.meta
 *.meta
-Assets/Editor/GfxbinTool/Imported/
+Assets/Editor/GfxbinTool/Imported/*
 Assets/Scenes/GladioTest.unity
 Assets/Scripts/DrawNormals.cs
 Assets/Scripts/MeshVertexInfoVisualizer.cs
+
+# Anchor file to ensure Imported folder is included in repo
+!Assets/Editor/GfxbinTool/Imported/.gitkeep
